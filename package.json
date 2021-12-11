@@ -1,6 +1,7 @@
 {
   "name": "my-top-albums-svelte",
   "version": "0.0.1",
+  "license": "MIT",
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
@@ -33,7 +34,6 @@
   "type": "module",
   "dependencies": {
     "@tailwindcss/typography": "^0.4.1",
-    "daisyui": "^1.16.2",
-    "dotenv": "^10.0.0"
+    "daisyui": "^1.16.2"
   }
 }

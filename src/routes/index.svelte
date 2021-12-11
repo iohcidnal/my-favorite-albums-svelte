@@ -1,34 +1,10 @@
-<script context="module" lang="ts">
-  import type { EnvVars } from './env-vars.json';
-
-  export async function load({ fetch }) {
-    const url = '/env-vars.json';
-    const response = await fetch(url);
-
-    if (response.ok) {
-      const envVars: EnvVars = await response.json();
-      return {
-        props: {
-          envVars
-        }
-      };
-    }
-
-    return {
-      status: response.status,
-      error: new Error('Error occured while getting environment variables.')
-    };
-  }
-</script>
-
 <script lang="ts">
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
+  import envVars from '$lib/env-vars';
 
-  export let envVars: EnvVars;
-
-  let accessToken: string;
   const scopes = 'user-read-private+user-read-email';
+  let accessToken: string;
 
   onMount(async () => {
     const url = window.location.href;
@@ -40,7 +16,7 @@
   });
 
   function handleLogin() {
-    document.location = `https://accounts.spotify.com/authorize/?client_id=${envVars.CLIENT_ID}&response_type=token&redirect_uri=${envVars.REDIRECT_URL}&scope=${scopes}`;
+    document.location = `https://accounts.spotify.com/authorize/?client_id=${envVars.clientId}&response_type=token&redirect_uri=${envVars.redirectUrl}&scope=${scopes}`;
   }
 </script>
 
