@@ -2,7 +2,7 @@ import envVars from '$lib/env-vars';
 
 export interface EnvVars {
   CLIENT_ID: string;
-  CALLBACK_URL: string;
+  REDIRECT_URL: string;
 }
 
 /**
@@ -13,7 +13,7 @@ export async function get(): Promise<{ body: EnvVars }> {
   return {
     body: {
       CLIENT_ID: envVars.clientId,
-      CALLBACK_URL: envVars.redirectUrl
+      REDIRECT_URL: envVars.redirectUrl
     }
   };
 }

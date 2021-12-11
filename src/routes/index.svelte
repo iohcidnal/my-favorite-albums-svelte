@@ -22,17 +22,35 @@
 </script>
 
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
+
   export let envVars: EnvVars;
-  let counter = 0;
-  let y: any;
+
+  let accessToken: string;
+  const scopes = 'user-read-private+user-read-email';
+
+  onMount(async () => {
+    const url = window.location.href;
+    if (url.indexOf('_token') > -1) {
+      accessToken = url.split('_token=')[1].split('&')[0].trim();
+      localStorage.setItem('spotify-access-token-svelte', accessToken);
+      await goto('top-albums', { replaceState: true });
+    }
+  });
+
+  function handleLogin() {
+    document.location = `https://accounts.spotify.com/authorize/?client_id=${envVars.CLIENT_ID}&response_type=token&redirect_uri=${envVars.REDIRECT_URL}&scope=${scopes}`;
+  }
 </script>
 
-<main class="prose max-w-4xl mx-auto py-8">
-  <h1>Welcome to SvelteKit</h1>
-
-  <h2>Client ID: {envVars.CLIENT_ID}</h2>
-  <h2>Callback URL: {envVars.CALLBACK_URL}</h2>
-
-  <h3>Current count is {counter}</h3>
-  <button class="btn btn-success" on:click={() => counter++}>+ 1</button>
+<main class="container mx-auto pt-6 text-center">
+  <p class="prose-xl">Welcome to My Top 10 Albums</p>
+  <p class="font-light">
+    A simple application that lets you browse and pick your top 10 albums of all-time.
+  </p>
+  <div class="pt-6">
+    Continue by logging into
+    <a class="link-primary" href="/" on:click|preventDefault={handleLogin}>Spotify</a>
+  </div>
 </main>
