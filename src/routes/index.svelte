@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import envVars from '$lib/env-vars';
+  import { envVars } from '$lib/common';
 
-  const scopes = 'user-read-private+user-read-email';
+  const SCOPE = 'user-read-private+user-read-email';
   let accessToken: string;
 
   onMount(async () => {
@@ -16,7 +16,7 @@
   });
 
   function handleLogin() {
-    document.location = `https://accounts.spotify.com/authorize/?client_id=${envVars.clientId}&response_type=token&redirect_uri=${envVars.redirectUrl}&scope=${scopes}`;
+    document.location = `https://accounts.spotify.com/authorize/?client_id=${envVars.clientId}&response_type=token&redirect_uri=${envVars.redirectUrl}&scope=${SCOPE}`;
   }
 </script>
 
