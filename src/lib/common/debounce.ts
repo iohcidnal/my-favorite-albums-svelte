@@ -7,5 +7,5 @@ export default function debounce(fn: () => any, delay?: number) {
     clearTimeout(timeout);
   });
 
-  return new Promise(resolve => (timeout = setTimeout(() => resolve(fn()), delay ?? 800)));
+  return new Promise(resolve => (timeout = setTimeout(() => resolve(fn()), delay ?? 1000)));
 }

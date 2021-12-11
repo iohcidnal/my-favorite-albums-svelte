@@ -1,15 +1,37 @@
 <script lang="ts">
   import { debounce } from '$lib/common';
+  import AlbumCard, { AlbumCardProps } from '$lib/components/album-card.svelte';
 
+  const SPOTIFY_SEARCH_URL = 'https://api.spotify.com/v1/search?q=';
   let searchTerm: string;
   let debouncedSearchTerm: string;
+  let albums: AlbumCardProps[] = [];
 
-  $: {
-    debounce(() => searchTerm).then((value: string) => (debouncedSearchTerm = value));
-  }
+  $: debounce(() => searchTerm).then((value: string) => (debouncedSearchTerm = value));
 
-  $: {
-    console.log('debouncedSearchTerm :>> ', debouncedSearchTerm);
+  $: (async () => (albums = debouncedSearchTerm ? await searchAlbums() : []))();
+
+  async function searchAlbums() {
+    // TODO: Create a fetch util function to DRY
+    const url = `${SPOTIFY_SEARCH_URL}${debouncedSearchTerm}&type=album&market=US&limit=12&offset=0`;
+    const accessToken = localStorage.getItem('spotify-access-token-svelte');
+    const options = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    };
+    const response = await fetch(url, options);
+    const result = await response.json();
+
+    return result.albums.items.map((item: any) => {
+      const album: AlbumCardProps = {
+        id: item.id,
+        albumName: item.name,
+        artistName: item.artists[0].name,
+        imageUrl: item.images[1].url
+      };
+      return album;
+    });
   }
 </script>
 
@@ -22,4 +44,7 @@
       bind:value={searchTerm}
     />
   </div>
+  {#each albums as album (album.id)}
+    <AlbumCard {album} />
+  {/each}
 </main>
