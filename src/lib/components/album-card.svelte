@@ -12,7 +12,7 @@
   export let album: AlbumCardProps;
 </script>
 
-<div class="card compact shadow-xl w-64 flex-auto" transition:fade|local>
+<div class="card compact shadow-xl w-64 flex-auto hover:bg-gray-100" transition:fade|local>
   <figure>
     <img src={album.imageUrl} alt="Album" />
   </figure>
