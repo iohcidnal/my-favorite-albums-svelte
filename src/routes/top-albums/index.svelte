@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+
   import { debounce } from '$lib/common';
   import type { AlbumCardProps } from '$lib/components/album-card.svelte';
   import SearchResult from '$lib/components/search-result.svelte';
@@ -13,26 +15,30 @@
   $: (async () => (albums = debouncedSearchTerm ? await searchAlbums() : []))();
 
   async function searchAlbums(): Promise<AlbumCardProps[]> {
-    // TODO: Create a fetch util function to DRY
-    const url = `${SPOTIFY_SEARCH_URL}${debouncedSearchTerm}&type=album&market=US&limit=12&offset=0`;
-    const accessToken = localStorage.getItem('spotify-access-token-svelte');
-    const options = {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    };
-    const response = await fetch(url, options);
-    const result = await response.json();
-
-    return result.albums.items.map((item: any) => {
-      const album: AlbumCardProps = {
-        id: item.id,
-        albumName: item.name,
-        artistName: item.artists[0].name,
-        imageUrl: item.images[1].url
+    try {
+      // TODO: Create a fetch util function to DRY
+      const url = `${SPOTIFY_SEARCH_URL}${debouncedSearchTerm}&type=album&market=US&limit=12&offset=0`;
+      const accessToken = localStorage.getItem('spotify-access-token-svelte');
+      const options = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
       };
-      return album;
-    });
+      const response = await fetch(url, options);
+      const result = await response.json();
+
+      return result.albums.items.map((item: any) => {
+        const album: AlbumCardProps = {
+          id: item.id,
+          albumName: item.name,
+          artistName: item.artists[0].name,
+          imageUrl: item.images[1].url
+        };
+        return album;
+      });
+    } catch {
+      await goto('/');
+    }
   }
 </script>
 
