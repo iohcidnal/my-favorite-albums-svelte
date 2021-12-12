@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
 
-  import { debounce } from '$lib/common';
+  import { debounce, fetcher } from '$lib/common';
   import type { AlbumCardProps } from '$lib/components/album-card.svelte';
   import SearchResult from '$lib/components/search-result.svelte';
 
@@ -12,21 +12,17 @@
 
   $: debounce(() => searchTerm).then((value: string) => (debouncedSearchTerm = value));
 
+  // Create a reactive object. This needs to be declared before calling `searchAlbums`
+  // because order in which reactive statements are called matters in svelte.
+  $: fetchAlbums = fetcher(
+    `${SPOTIFY_SEARCH_URL}${debouncedSearchTerm}&type=album&market=US&limit=12&offset=0`
+  );
+
   $: (async () => (albums = debouncedSearchTerm ? await searchAlbums() : []))();
 
   async function searchAlbums(): Promise<AlbumCardProps[]> {
     try {
-      // TODO: Create a fetch util function to DRY
-      const url = `${SPOTIFY_SEARCH_URL}${debouncedSearchTerm}&type=album&market=US&limit=12&offset=0`;
-      const accessToken = localStorage.getItem('spotify-access-token-svelte');
-      const options = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      };
-      const response = await fetch(url, options);
-      const result = await response.json();
-
+      const result = await fetchAlbums.get();
       return result.albums.items.map((item: any) => {
         const album: AlbumCardProps = {
           id: item.id,
