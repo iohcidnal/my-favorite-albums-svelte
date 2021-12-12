@@ -3,7 +3,7 @@
   export let albums: AlbumCardProps[];
 </script>
 
-<div class="flex flex-wrap gap-4 pt-4">
+<div class="flex flex-wrap justify-center gap-4 pt-4">
   {#each albums as album (album.id)}
     <AlbumCard {album} />
   {/each}

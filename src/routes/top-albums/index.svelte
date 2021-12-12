@@ -38,7 +38,7 @@
   }
 </script>
 
-<main class="px-10 py-6">
+<main class="container mx-auto px-2 py-4">
   <div class="form-control">
     <input
       class="input input-bordered input-info"
