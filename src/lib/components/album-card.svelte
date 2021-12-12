@@ -8,10 +8,11 @@
 </script>
 
 <script lang="ts">
+  import { fade } from 'svelte/transition';
   export let album: AlbumCardProps;
 </script>
 
-<div class="card compact shadow-xl w-64 flex-auto">
+<div class="card compact shadow-xl w-64 flex-auto" transition:fade|local>
   <figure>
     <img src={album.imageUrl} alt="Album" />
   </figure>
