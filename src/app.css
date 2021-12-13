@@ -11,3 +11,12 @@
     @apply font-bold;
   }
 }
+
+@layer components {
+  .btn {
+    @apply rounded-full;
+  }
+  .input {
+    @apply rounded-full;
+  }
+}
