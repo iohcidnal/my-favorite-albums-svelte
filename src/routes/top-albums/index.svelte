@@ -38,10 +38,10 @@
   }
 </script>
 
-<main class="container mx-auto px-2 py-4">
-  <div class="form-control">
+<main>
+  <div class="sticky top-0 px-4 py-4 z-50 bg-white shadow-md form-control">
     <input
-      class="input input-bordered input-info"
+      class="input bg-gray-100"
       type="text"
       placeholder="Search albums"
       bind:value={searchTerm}
