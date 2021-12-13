@@ -1,8 +1,8 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
 
-  import { debounce, fetcher } from '$lib/common';
-  import type { AlbumCardProps } from '$lib/components/album-card.svelte';
+  import { AlbumCardProps, debounce, fetcher, toCardProps } from '$lib/common';
+  import AlbumLoader from '$lib/components/album-loader.svelte';
   import SearchResult from '$lib/components/search-result.svelte';
 
   const SPOTIFY_SEARCH_URL = 'https://api.spotify.com/v1/search?q=';
@@ -23,18 +23,17 @@
   async function searchAlbums(): Promise<AlbumCardProps[]> {
     try {
       const result = await fetchAlbums.get();
-      return result.albums.items.map((item: any) => {
-        const album: AlbumCardProps = {
-          id: item.id,
-          albumName: item.name,
-          artistName: item.artists[0].name,
-          imageUrl: item.images[1].url
-        };
-        return album;
-      });
+      fetchAlbums = fetcher(result.albums.next);
+      return result.albums.items.map(toCardProps);
     } catch {
       await goto('/');
     }
+  }
+
+  async function handleLoadMore() {
+    const result = await fetchAlbums.get();
+    fetchAlbums = fetcher(result.albums.next);
+    albums = [...albums, ...result.albums.items.map(toCardProps)];
   }
 </script>
 
@@ -48,4 +47,5 @@
     />
   </div>
   <SearchResult {albums} />
+  <AlbumLoader {albums} on:click={handleLoadMore} />
 </main>

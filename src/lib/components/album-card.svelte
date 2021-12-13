@@ -1,13 +1,6 @@
-<script context="module" lang="ts">
-  export interface AlbumCardProps {
-    id: string;
-    albumName: string;
-    artistName: string;
-    imageUrl: string;
-  }
-</script>
-
 <script lang="ts">
+  import type { AlbumCardProps } from '$lib/common';
+
   import { fade } from 'svelte/transition';
   export let album: AlbumCardProps;
 </script>
