@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import { fade } from 'svelte/transition';
   import type { AlbumCardProps } from '$lib/common';
 
-  import { fade } from 'svelte/transition';
   export let album: AlbumCardProps;
 </script>
 
@@ -13,7 +14,12 @@
     <h2 class="card-title">{album.albumName}</h2>
     <p>{album.artistName}</p>
     <div class="card-actions justify-center">
-      <button class="btn btn-sm btn-outline">MORE INFO</button>
+      <button
+        class="btn btn-sm btn-outline"
+        on:click={async () =>
+          await goto(`top-albums/${album.id}`, { noscroll: true, keepfocus: true })}
+        >MORE INFO</button
+      >
       <button class="btn btn-sm btn-outline">FAVORITE</button>
     </div>
   </div>
