@@ -1,29 +1,49 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
 
-  import { AlbumCardProps, debounce, fetcher, toCardProps } from '$lib/common';
+  import {
+    AlbumCardProps,
+    albums,
+    debounce,
+    debouncedSearchTerm,
+    fetcher,
+    nextUrl,
+    toCardProps
+  } from '$lib/common';
   import AlbumLoader from '$lib/components/album-loader.svelte';
   import SearchResult from '$lib/components/search-result.svelte';
 
   const SPOTIFY_SEARCH_URL = 'https://api.spotify.com/v1/search?q=';
-  let searchTerm: string;
-  let debouncedSearchTerm: string;
-  let albums: AlbumCardProps[];
+  let searchTerm = $debouncedSearchTerm;
+  let shouldFetch = $albums.length === 0; // Should only fetch if there are no albums in the store
 
-  $: debounce(() => searchTerm).then((value: string) => (debouncedSearchTerm = value));
+  $: debounce(() => searchTerm).then((value: string) => {
+    if (value !== $debouncedSearchTerm) {
+      shouldFetch = true; // search term was changed, need to fetch
+      debouncedSearchTerm.set(value);
+    }
+  });
 
   // Create a reactive object. This needs to be declared before calling `searchAlbums`
   // because order in which reactive statements are called matters in svelte.
   $: fetchAlbums = fetcher(
-    `${SPOTIFY_SEARCH_URL}${debouncedSearchTerm}&type=album&market=US&limit=12&offset=0`
+    `${SPOTIFY_SEARCH_URL}${$debouncedSearchTerm}&type=album&market=US&limit=12&offset=0`
   );
 
-  $: (async () => (albums = debouncedSearchTerm ? await searchAlbums() : []))();
+  $: (async () => {
+    if (shouldFetch) {
+      albums.set($debouncedSearchTerm ? await searchAlbums() : []);
+    }
+  })();
 
   async function searchAlbums(): Promise<AlbumCardProps[]> {
     try {
+      // TODO: Fix this! load more is broken when navigating back to this page
+      // nextUrl is not being set properly
       const result = await fetchAlbums.get();
+      nextUrl.set(result.albums.next);
       fetchAlbums = fetcher(result.albums.next);
+
       return result.albums.items.map(toCardProps);
     } catch {
       await goto('/');
@@ -33,7 +53,8 @@
   async function handleLoadMore() {
     const result = await fetchAlbums.get();
     fetchAlbums = fetcher(result.albums.next);
-    albums = [...albums, ...result.albums.items.map(toCardProps)];
+    nextUrl.set(result.albums.next);
+    albums.update(current => [...current, ...result.albums.items.map(toCardProps)]);
   }
 </script>
 
@@ -46,6 +67,6 @@
       bind:value={searchTerm}
     />
   </div>
-  <SearchResult {albums} />
-  <AlbumLoader {albums} on:click={handleLoadMore} />
+  <SearchResult />
+  <AlbumLoader on:click={handleLoadMore} />
 </main>
