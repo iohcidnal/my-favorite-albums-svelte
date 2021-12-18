@@ -17,18 +17,19 @@
   let searchTerm = $debouncedSearchTerm;
   let shouldFetch = $albums.length === 0; // Should only fetch if there are no albums in the store
 
-  $: debounce(() => searchTerm).then((value: string) => {
+  $: (async () => {
+    const value = (await debounce(() => searchTerm)) as string;
     if (value !== $debouncedSearchTerm) {
-      shouldFetch = true; // search term was changed, need to fetch
+      // Search term was changed. Need to fetch and reinitialize next url.
+      shouldFetch = true;
+      nextUrl.set(`${SPOTIFY_SEARCH_URL}${value}&type=album&market=US&offset=0&limit=12`);
       debouncedSearchTerm.set(value);
     }
-  });
+  })();
 
-  // Create a reactive object. This needs to be declared before calling `searchAlbums`
-  // because order in which reactive statements are called matters in svelte.
-  $: fetchAlbums = fetcher(
-    `${SPOTIFY_SEARCH_URL}${$debouncedSearchTerm}&type=album&market=US&limit=12&offset=0`
-  );
+  // Create a reactive function. This needs to be declared before calling `searchAlbums`
+  // because order in which reactive statements are called matters.
+  $: fetchAlbums = fetcher($nextUrl);
 
   $: (async () => {
     if (shouldFetch) {
@@ -38,12 +39,8 @@
 
   async function searchAlbums(): Promise<AlbumCardProps[]> {
     try {
-      // TODO: Fix this! load more is broken when navigating back to this page
-      // nextUrl is not being set properly
       const result = await fetchAlbums.get();
       nextUrl.set(result.albums.next);
-      fetchAlbums = fetcher(result.albums.next);
-
       return result.albums.items.map(toCardProps);
     } catch {
       await goto('/');
@@ -52,7 +49,6 @@
 
   async function handleLoadMore() {
     const result = await fetchAlbums.get();
-    fetchAlbums = fetcher(result.albums.next);
     nextUrl.set(result.albums.next);
     albums.update(current => [...current, ...result.albums.items.map(toCardProps)]);
   }
