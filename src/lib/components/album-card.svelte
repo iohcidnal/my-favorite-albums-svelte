@@ -14,13 +14,11 @@
     <h2 class="card-title">{album.albumName}</h2>
     <p>{album.artistName}</p>
     <div class="card-actions justify-center">
-      <button
+      <a
         class="btn btn-sm btn-outline"
-        on:click={async () =>
-          await goto(`top-albums/${album.id}`, {
-            noscroll: true,
-            keepfocus: true
-          })}>MORE INFO</button
+        href={`top-albums/${album.id}`}
+        sveltekit:noscroll
+        sveltekit:prefetch>MORE INFO</a
       >
       <button class="btn btn-sm btn-outline">FAVORITE</button>
     </div>
