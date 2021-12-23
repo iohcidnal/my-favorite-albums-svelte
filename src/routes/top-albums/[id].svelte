@@ -26,13 +26,13 @@
 
 {#if album}
   <!-- <button on:click={() => goto('/top-albums')}>Back</button> -->
-  <div class="flex gap-4 min-h-screen">
+  <div class="flex flex-col md:flex-row min-h-screen">
     <div class="hero flex-1" style={`background-image: url(${album.images[0].url});`}>
-      <div class="hero-overlay" />
+      <div class="hero-overlay bg-opacity-60" />
+      <div class="text-2xl md:text-4xl font-bold text-center text-white">{album.name}</div>
     </div>
-    <div class="flex-1 pt-4">
+    <div class="flex-1 bg-gray-50 p-8 md:p-4">
       <div class="flex flex-col gap-4">
-        <p class="text-4xl font-light">{album.name}</p>
         <section>
           <p class="text-lg">Artists</p>
           <ul class="list-disc list-outside pl-10">
