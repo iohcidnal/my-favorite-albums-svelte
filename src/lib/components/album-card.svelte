@@ -6,7 +6,10 @@
   export let album: AlbumCardProps;
 </script>
 
-<div class="card compact shadow-xl w-64 hover:bg-gray-100" transition:fade|local>
+<div
+  class="card compact card-side md:flex-col md:w-64 hover:bg-gray-100 shadow-xl"
+  transition:fade|local
+>
   <figure>
     <img src={album.imageUrl} alt="Album" />
   </figure>
