@@ -5,6 +5,7 @@ export default function toCardProps(item): AlbumCardProps {
     id: item.id,
     albumName: item.name,
     artistName: item.artists[0].name,
+    href: item.href,
     imageUrl: item.images[1].url
   };
 }

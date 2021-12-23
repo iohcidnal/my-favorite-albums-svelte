@@ -17,8 +17,10 @@
       <button
         class="btn btn-sm btn-outline"
         on:click={async () =>
-          await goto(`top-albums/${album.id}`, { noscroll: true, keepfocus: true })}
-        >MORE INFO</button
+          await goto(`top-albums/${album.id}`, {
+            noscroll: true,
+            keepfocus: true
+          })}>MORE INFO</button
       >
       <button class="btn btn-sm btn-outline">FAVORITE</button>
     </div>
