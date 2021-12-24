@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
   import { fade } from 'svelte/transition';
   import type { AlbumCardProps } from '$lib/common';
 
@@ -19,7 +18,7 @@
     <div class="card-actions justify-center">
       <a
         class="btn btn-sm btn-outline"
-        href={`albums/${album.id}`}
+        href={`/albums/${album.id}`}
         sveltekit:noscroll
         sveltekit:prefetch>MORE INFO</a
       >
