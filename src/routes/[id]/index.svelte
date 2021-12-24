@@ -11,10 +11,16 @@
 
 <script lang="ts">
   import { fetcher } from '$lib/common';
+  import { navigating } from '$app/stores';
 
   export let id: string;
   const SPOTIFY_ALBUM_URL = 'https://api.spotify.com/v1/albums';
   let album: any;
+
+  navigating.subscribe(nav => {
+    if (nav?.from.path.includes('favorites')) {
+    }
+  });
 
   $: (async () => {
     album = await fetcher(`${SPOTIFY_ALBUM_URL}/${id}`).get();
@@ -31,9 +37,6 @@
     </div>
     <div class="flex-1 pt-2 pl-4 pr-4">
       <div class="flex flex-col gap-4">
-        <button class="btn btn-secondary btn-outline btn-sm w-1/4" on:click={() => history.back()}>
-          Back
-        </button>
         <section>
           <p class="text-lg">Artists</p>
           <ul class="list-disc list-outside pl-10">

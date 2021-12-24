@@ -16,11 +16,8 @@
     <h2 class="card-title">{album.albumName}</h2>
     <p>{album.artistName}</p>
     <div class="card-actions justify-center">
-      <a
-        class="btn btn-sm btn-outline"
-        href={`/albums/${album.id}`}
-        sveltekit:noscroll
-        sveltekit:prefetch>MORE INFO</a
+      <a class="btn btn-sm btn-outline" href={`/${album.id}`} sveltekit:noscroll sveltekit:prefetch
+        >MORE INFO</a
       >
       <button class="btn btn-sm btn-outline">FAVORITE</button>
     </div>

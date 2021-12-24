@@ -8,6 +8,6 @@
       <div class="badge badge-lg badge-info">{$albums.length}</div>
       results
     </span>
-    <button class="btn btn-secondary" on:click>load more </button>
+    <button class="btn btn-secondary btn-sm" on:click>load more </button>
   </div>
 {/if}
