@@ -5,8 +5,8 @@
     </div>
     <div class="flex-1 px-2 mx-2">
       <div class="items-stretch">
-        <a class="btn btn-ghost btn-sm rounded-btn" href="/top-albums"> browse </a>
-        <a class="btn btn-ghost btn-sm rounded-btn" href="/my-top-10"> my top 10 </a>
+        <a class="btn btn-ghost btn-sm rounded-btn" href="/albums"> browse </a>
+        <a class="btn btn-ghost btn-sm rounded-btn" href="/albums/favorites"> my favorites </a>
       </div>
     </div>
   </nav>

@@ -33,7 +33,7 @@
     </div>
     <div class="flex-1 pt-2 pl-4 pr-4">
       <div class="flex flex-col gap-4">
-        <a class="btn btn-secondary btn-outline btn-sm w-1/4" href="/top-albums" sveltekit:noscroll
+        <a class="btn btn-secondary btn-outline btn-sm w-1/4" href="/albums" sveltekit:noscroll
           >Back</a
         >
         <section>

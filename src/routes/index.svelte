@@ -11,7 +11,7 @@
     if (url.indexOf('_token') > -1) {
       accessToken = url.split('_token=')[1].split('&')[0].trim();
       localStorage.setItem('spotify-access-token-svelte', accessToken);
-      await goto('top-albums', { replaceState: true });
+      await goto('albums', { replaceState: true });
     }
   });
 
@@ -21,10 +21,8 @@
 </script>
 
 <main class="container mx-auto pt-6 text-center">
-  <p class="prose-xl">Welcome to My Top 10 Albums</p>
-  <p class="font-light">
-    A simple application that lets you browse and pick your top 10 albums of all-time.
-  </p>
+  <p class="prose-xl">Welcome to My Favorite Albums</p>
+  <p class="font-light">A simple application that lets you browse and pick your favorite albums.</p>
   <div class="pt-6">
     Continue by logging into
     <a class="link-primary" href="/" on:click|preventDefault={handleLogin}>Spotify</a>

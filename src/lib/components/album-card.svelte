@@ -19,7 +19,7 @@
     <div class="card-actions justify-center">
       <a
         class="btn btn-sm btn-outline"
-        href={`top-albums/${album.id}`}
+        href={`albums/${album.id}`}
         sveltekit:noscroll
         sveltekit:prefetch>MORE INFO</a
       >
