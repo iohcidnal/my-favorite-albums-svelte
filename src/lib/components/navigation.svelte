@@ -1,29 +1,20 @@
 <script lang="ts">
-  export let selected: 'albums' | 'favorites';
+  import { page } from '$app/stores';
 </script>
 
 <nav class="navbar bg-neutral text-neutral-content">
   <div class="flex-1 px-2 mx-2">
     <div class="items-stretch">
-      <a
-        class="btn btn-ghost btn-sm rounded-btn"
-        class:selected={selected === 'albums'}
-        href="/albums"
-      >
-        albums
-      </a>
-      <a
-        class="btn btn-ghost btn-sm rounded-btn"
-        class:selected={selected === 'favorites'}
-        href="/favorites"
-      >
-        my favorites
-      </a>
+      <a class:selected={$page.path === '/albums'} href="/albums"> albums </a>
+      <a class:selected={$page.path === '/favorites'} href="/favorites"> my favorites </a>
     </div>
   </div>
 </nav>
 
 <style>
+  a {
+    @apply btn btn-ghost btn-sm rounded-btn;
+  }
   .selected {
     @apply btn-active font-bold;
   }
