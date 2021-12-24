@@ -3,7 +3,7 @@
   import { goto } from '$app/navigation';
   import { envVars } from '$lib/common';
 
-  const SCOPE = 'user-read-private+user-read-email';
+  const SCOPE = 'user-read-private+user-read-email+user-library-modify+user-library-read';
   let accessToken: string;
 
   onMount(async () => {

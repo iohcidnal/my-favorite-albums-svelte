@@ -63,6 +63,6 @@
       bind:value={searchTerm}
     />
   </div>
-  <SearchResult />
+  <SearchResult albums={$albums} />
   <AlbumLoader on:click={handleLoadMore} />
 </main>

@@ -10,16 +10,14 @@
 </script>
 
 <script lang="ts">
-  import { albums, fetcher } from '$lib/common';
+  import { fetcher } from '$lib/common';
 
   export let id: string;
+  const SPOTIFY_ALBUM_URL = 'https://api.spotify.com/v1/albums';
   let album: any;
 
-  const href = $albums.find(a => a.id === id)?.href;
-  const fetch = fetcher(href);
-
   $: (async () => {
-    album = await fetch.get();
+    album = await fetcher(`${SPOTIFY_ALBUM_URL}/${id}`).get();
   })();
 </script>
 
@@ -33,9 +31,9 @@
     </div>
     <div class="flex-1 pt-2 pl-4 pr-4">
       <div class="flex flex-col gap-4">
-        <a class="btn btn-secondary btn-outline btn-sm w-1/4" href="/albums" sveltekit:noscroll
-          >Back</a
-        >
+        <button class="btn btn-secondary btn-outline btn-sm w-1/4" on:click={() => history.back()}>
+          Back
+        </button>
         <section>
           <p class="text-lg">Artists</p>
           <ul class="list-disc list-outside pl-10">

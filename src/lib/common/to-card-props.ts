@@ -1,6 +1,6 @@
 import type { AlbumCardProps } from './types';
 
-export default function toCardProps(item): AlbumCardProps {
+export default function toCardProps(item: any): AlbumCardProps {
   return {
     id: item.id,
     albumName: item.name,
