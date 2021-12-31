@@ -64,5 +64,5 @@
     />
   </div>
   <SearchResult albums={$albums} />
-  <AlbumLoader on:click={handleLoadMore} />
+  <AlbumLoader albums={$albums} disabled={!$nextUrl} on:click={handleLoadMore} />
 </main>
