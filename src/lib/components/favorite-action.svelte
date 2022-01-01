@@ -1,12 +1,23 @@
 <script lang="ts">
-  import type { AlbumCardProps } from '$lib/common';
-  export let album: AlbumCardProps;
+  import { goto } from '$app/navigation';
+  import { AlbumCardProps, albums, favorites, fetcher } from '$lib/common';
 
-  function handleClick() {
-    console.log(album);
-    // onclick, save album to Spotify user's 'Your Music' library.
-    // https://developer.spotify.com/documentation/web-api/reference/#/operations/save-albums-user
+  export let album: AlbumCardProps;
+  const fetch = fetcher('https://api.spotify.com/v1/me/albums');
+
+  async function handleClick() {
+    try {
+      await fetch.put({ ids: [album.id] });
+      const index = $albums.findIndex(a => a.id === album.id);
+      $albums = [...$albums.slice(0, index), ...$albums.slice(index + 1)];
+
+      if (!$favorites.find(f => f.id === album.id)) {
+        $favorites = [album, ...$favorites];
+      }
+    } catch {
+      await goto('/');
+    }
   }
 </script>
 
-<button class="btn btn-sm btn-outline" on:click={handleClick}>favorite</button>
+<button class="btn btn-sm btn-outline" on:click={handleClick}> favorite </button>
