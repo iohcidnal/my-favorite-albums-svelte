@@ -1,20 +1,33 @@
+import { browser } from '$app/env';
+
 export default function fetcher(url: string) {
+  if (!browser) return;
+
+  const accessToken = localStorage.getItem('spotify-access-token-svelte');
+  const options: RequestInit = {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    }
+  };
+
   return {
     get: async () => {
-      let options: RequestInit;
-      if (url.match(/spotify/i)) {
-        const accessToken = localStorage.getItem('spotify-access-token-svelte');
-        options = {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        };
-      }
+      options.method = 'GET';
       const response = await fetch(url, options);
-      const result = await response.json();
-
-      return result;
+      return await response.json();
+    },
+    put: async (body: Record<string, any>) => {
+      options.method = 'PUT';
+      options.body = JSON.stringify(body);
+      const response = await fetch(url, options);
+      if (response.status !== 200) throw new Error(response.statusText);
+    },
+    delete: async (body: Record<string, any>) => {
+      options.method = 'DELETE';
+      options.body = JSON.stringify(body);
+      const response = await fetch(url, options);
+      if (response.status !== 200) throw new Error(response.statusText);
     }
   };
 }
