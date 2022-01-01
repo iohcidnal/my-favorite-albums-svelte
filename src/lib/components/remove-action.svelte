@@ -1,11 +1,18 @@
 <script lang="ts">
-  import type { AlbumCardProps } from '$lib/common';
-  export let album: AlbumCardProps;
+  import { goto } from '$app/navigation';
+  import { AlbumCardProps, favorites, fetcher } from '$lib/common';
 
-  function handleClick() {
-    console.log(album);
-    // onclick, Remove album from the current user's 'Your Music' library.
-    // https://developer.spotify.com/documentation/web-api/reference/#/operations/remove-albums-user
+  export let album: AlbumCardProps;
+  const fetch = fetcher('https://api.spotify.com/v1/me/albums');
+
+  async function handleClick() {
+    try {
+      await fetch.delete({ ids: [album.id] });
+      const index = $favorites.findIndex(f => f.id === album.id);
+      $favorites = [...$favorites.slice(0, index), ...$favorites.slice(index + 1)];
+    } catch {
+      await goto('/');
+    }
   }
 </script>
 
