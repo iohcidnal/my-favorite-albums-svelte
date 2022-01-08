@@ -11,19 +11,13 @@
 
 <script lang="ts">
   import { fetcher } from '$lib/common';
-  import { navigating } from '$app/stores';
 
   export let id: string;
   const SPOTIFY_ALBUM_URL = 'https://api.spotify.com/v1/albums';
   let album: any;
 
-  navigating.subscribe(nav => {
-    if (nav?.from.path.includes('favorites')) {
-    }
-  });
-
   $: (async () => {
-    album = await fetcher(`${SPOTIFY_ALBUM_URL}/${id}`).get();
+    album = await fetcher(`${SPOTIFY_ALBUM_URL}/${id}`)?.get();
   })();
 </script>
 
