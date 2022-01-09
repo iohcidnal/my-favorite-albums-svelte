@@ -21,6 +21,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
   // Set collectCoverage to false for now since setting this to true gives an [ERR_IVALID_ARG_TYPE] error.
   // This is a known issue: https://github.com/mihar-22/svelte-jester/issues/72
+  // As a workaround for now, run `yarn test --watch --coverage` to see coverage report.
   collectCoverage: false,
   collectCoverageFrom: ['src/**/*.{ts,svelte}', '!**/node_modules/**']
 };

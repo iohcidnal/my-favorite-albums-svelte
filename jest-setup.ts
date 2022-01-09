@@ -1,7 +1,8 @@
 import '@testing-library/jest-dom';
 
+global.mockGoto = jest.fn();
 jest.mock('$app/navigation.js', () => ({
-  goto: jest.fn()
+  goto: global.mockGoto
 }));
 
 jest.mock('$lib/common', () => ({
