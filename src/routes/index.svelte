@@ -16,7 +16,9 @@
   });
 
   function handleLogin() {
-    document.location = `https://accounts.spotify.com/authorize/?client_id=${envVars.clientId}&response_type=token&redirect_uri=${envVars.redirectUrl}&scope=${SCOPE}`;
+    window.location.assign(
+      `https://accounts.spotify.com/authorize/?client_id=${envVars.clientId}&response_type=token&redirect_uri=${envVars.redirectUrl}&scope=${SCOPE}`
+    );
   }
 </script>
 
